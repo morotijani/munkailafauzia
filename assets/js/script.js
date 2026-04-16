@@ -1,48 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Navigation background on scroll
-    const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+    // 1. Initialize Locomotive Scroll
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        multiplier: 1.2,
+        class: 'is-reveal'
     });
 
-    // 2. Parallax effect for Hero Image
-    const heroBg = document.querySelector('.hero-bg');
-    
-    window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY;
-        // Move the background image slightly down as user scrolls
-        if (heroBg && scrolled < window.innerHeight) {
-            heroBg.style.transform = `translateY(${scrolled * 0.3}px) scale(1.05)`;
-        }
+    // 2. Custom Cursor Logic
+    const cursor = document.querySelector('.cursor');
+    const trailer = document.querySelector('.cursor-trailer');
+    const links = document.querySelectorAll('a, .piece, .gallery-img');
+
+    // Make cursors follow mouse
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // The tiny cursor snaps exactly
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        
+        // The trailer has a slight lag effect natively by easing the translate, but we can do a simple version:
+        // Due to performance, a simple css transition on transform handles the "trail" effect reasonably well,
+        // but for exact perfection we do animate requestAnimationFrame.
+        trailer.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
     });
 
-    // 3. Reveal elements on scroll using Intersection Observer
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    
-    const revealOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                return;
-            } else {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
+    // Hover interactions
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            trailer.classList.add('hover');
         });
-    }, revealOptions);
-
-    revealElements.forEach(element => {
-        revealOnScroll.observe(element);
+        link.addEventListener('mouseleave', () => {
+            trailer.classList.remove('hover');
+        });
     });
 
+    // 3. Fix viewport resizing for Locomotive
+    new ResizeObserver(() => scroll.update()).observe(document.querySelector('[data-scroll-container]'));
 });
