@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const trailer = document.querySelector('.cursor-trailer');
     const links = document.querySelectorAll('a, .piece, .gallery-img, .item, .mobile-menu-toggle');
 
+    // Navigation Scrolling
+    document.querySelectorAll('.item[href]').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = item.getAttribute('href');
+            if (target) {
+                scroll.scrollTo(target);
+            }
+        });
+    });
+
     // Make cursors follow mouse
     document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
