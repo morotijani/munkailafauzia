@@ -82,15 +82,22 @@
                                         href="#gift-support">Gift Support</span><span class="item "
                                         href="#gallery">Gallery</span></div>
                             </div>
-                            <div class=" gatsby-image-wrapper"
-                                style="position:absolute;overflow:hidden;top:0;left:0;width:100%;height:100vh;margin-top:0;opacity:0.5;pointer-events:none">
-                                <div aria-hidden="true" style="width:100%;padding-bottom:75%"></div>
-                                <picture>
-                                    <img src="assets/images/bg-1.jpg" alt="Munkaila and Fauzia" loading="eager"
-                                        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:1;transition:none" />
-                                </picture>
+                            <div class="hero-slider"
+                                style="position:absolute;overflow:hidden;top:0;left:0;width:100%;height:100vh;margin-top:0;opacity:0.5;pointer-events:none;z-index:0">
+                                <div class="hero-slide active"
+                                    style="background-image:url(assets/images/bg-1.jpg);position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;transition:opacity 1.5s ease-in-out;opacity:1">
+                                </div>
+                                <div class="hero-slide"
+                                    style="background-image:url(assets/images/bg-4.jpg);position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;transition:opacity 1.5s ease-in-out;opacity:0">
+                                </div>
+                                <div class="hero-slide"
+                                    style="background-image:url(assets/images/bg-2.jpg);position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;transition:opacity 1.5s ease-in-out;opacity:0">
+                                </div>
+                                <div class="hero-slide"
+                                    style="background-image:url(assets/images/bg-5.jpg);position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;transition:opacity 1.5s ease-in-out;opacity:0">
+                                </div>
                             </div>
-                            <div class="home-inner" id="home">
+                            <div class="home-inner" id="home" style="position:relative;z-index:10">
                                 <div class="ptcl-container">
                                     <div class="circle-container">
                                         <div class="circle"></div>
@@ -593,6 +600,26 @@
     <!-- Locomotive Scroll & Custom Logic -->
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script src="assets/js/script.js"></script>
+
+    <!-- Background Slider Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            if (slides.length > 0) {
+                let currentSlide = 0;
+                setInterval(() => {
+                    // Fade out current
+                    slides[currentSlide].style.opacity = 0;
+                    
+                    // Move to next
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    
+                    // Fade in next
+                    slides[currentSlide].style.opacity = 1;
+                }, 4000);
+            }
+        });
+    </script>
 </body>
 
 </html>
